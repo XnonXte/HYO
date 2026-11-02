@@ -5,7 +5,13 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.schemas.chat import ChatRequest, ChatResponse, HealthResponse
+from app.schemas.chat import (
+    ChatRequest,
+    ChatResponse,
+    HealthResponse,
+    TranscribeRequest,
+    TranscribeResponse,
+)
 from app.services.gemini_service import (
     GeminiQuotaError,
     GeminiResponseValidationError,
@@ -112,4 +118,30 @@ async def chat_with_hyo(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An unexpected internal error occurred. Please try again later.",
+        )
+
+
+@router.post(
+    "/transcribe",
+    response_model=TranscribeResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Transcribe audio to text",
+    description="Transcribe user voice recording to text using Gemini multimodal AI.",
+)
+async def transcribe_audio_endpoint(
+    request: TranscribeRequest,
+    gemini_service: Annotated[GeminiService, Depends(get_gemini_service)],
+) -> TranscribeResponse:
+    """Process incoming audio recording and return transcribed text."""
+    try:
+        text = await gemini_service.transcribe_audio(
+            audio_base64=request.audio_base64,
+            mime_type=request.mime_type,
+        )
+        return TranscribeResponse(text=text)
+    except Exception as exc:
+        logger.error("Failed to transcribe audio: %s", type(exc).__name__)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to transcribe audio. Please try again.",
         )

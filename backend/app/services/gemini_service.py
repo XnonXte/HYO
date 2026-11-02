@@ -117,47 +117,69 @@ class GeminiService:
         history_list = history or []
         contents = self._format_conversation_contents(message, history_list)
 
-        config = types.GenerateContentConfig(
-            system_instruction=HYO_SYSTEM_PROMPT,
-            temperature=0.7,
-            thinking_config=types.ThinkingConfig(
+        config_kwargs = {
+            "system_instruction": HYO_SYSTEM_PROMPT,
+            "temperature": 0.7,
+        }
+        if self.settings.GEMINI_THINKING_BUDGET > 0:
+            config_kwargs["thinking_config"] = types.ThinkingConfig(
                 thinking_budget=self.settings.GEMINI_THINKING_BUDGET
-            ),
-        )
-
-        try:
-            # Wrap asynchronous Gemini call with application-level timeout
-            response = await asyncio.wait_for(
-                self.client.aio.models.generate_content(
-                    model=self.settings.GEMINI_MODEL,
-                    contents=contents,
-                    config=config,
-                ),
-                timeout=self.settings.REQUEST_TIMEOUT_SECONDS,
             )
 
-        except asyncio.TimeoutError:
-            logger.error("Gemini API request timed out after %s seconds", self.settings.REQUEST_TIMEOUT_SECONDS)
-            raise GeminiTimeoutError()
+        config = types.GenerateContentConfig(**config_kwargs)
 
-        except errors.APIError as exc:
-            # Safe error logging: log status code only, never credentials or headers
-            status_code = getattr(exc, "code", None)
-            logger.error("Gemini APIError encountered with status code: %s", status_code)
+        candidate_models = [
+            self.settings.GEMINI_MODEL,
+            "gemini-flash-lite-latest",
+            "gemini-3.1-flash-lite",
+            "gemini-3.5-flash-lite",
+        ]
+        # Deduplicate while preserving order
+        models_to_try = list(dict.fromkeys(m for m in candidate_models if m))
 
-            if status_code == 429:
-                raise GeminiQuotaError()
-            elif status_code == 503:
-                raise GeminiUnavailableError()
-            elif status_code in (408, 504):
+        response = None
+        for attempt_idx, model_name in enumerate(models_to_try):
+            try:
+                # Wrap asynchronous Gemini call with application-level timeout
+                response = await asyncio.wait_for(
+                    self.client.aio.models.generate_content(
+                        model=model_name,
+                        contents=contents,
+                        config=config,
+                    ),
+                    timeout=self.settings.REQUEST_TIMEOUT_SECONDS,
+                )
+                break
+
+            except asyncio.TimeoutError:
+                logger.error("Gemini API request timed out after %s seconds for model %s", self.settings.REQUEST_TIMEOUT_SECONDS, model_name)
+                if attempt_idx < len(models_to_try) - 1:
+                    logger.warning("Attempting fallback model %s due to timeout on %s", models_to_try[attempt_idx + 1], model_name)
+                    continue
                 raise GeminiTimeoutError()
-            else:
-                raise GeminiServiceError(f"AI provider returned error status {status_code}.")
 
-        except Exception as exc:
-            # Catch other unexpected exceptions without exposing internal details
-            logger.error("Unexpected error in Gemini service: %s", type(exc).__name__)
-            raise GeminiServiceError("An unexpected error occurred while communicating with the AI service.")
+            except errors.APIError as exc:
+                # Safe error logging: log status code only, never credentials or headers
+                status_code = getattr(exc, "code", None)
+                logger.error("Gemini APIError encountered with status code: %s for model: %s", status_code, model_name)
+
+                if status_code in (429, 503) and attempt_idx < len(models_to_try) - 1:
+                    logger.warning("Gemini model %s returned status %s. Attempting fallback to %s", model_name, status_code, models_to_try[attempt_idx + 1])
+                    continue
+
+                if status_code == 429:
+                    raise GeminiQuotaError()
+                elif status_code == 503:
+                    raise GeminiUnavailableError()
+                elif status_code in (408, 504):
+                    raise GeminiTimeoutError()
+                else:
+                    raise GeminiServiceError(f"AI provider returned error status {status_code}.")
+
+            except Exception as exc:
+                # Catch other unexpected exceptions without exposing internal details
+                logger.error("Unexpected error in Gemini service: %s", type(exc).__name__)
+                raise GeminiServiceError("An unexpected error occurred while communicating with the AI service.")
 
         # Validate response content
         if not response or not response.text:
@@ -169,6 +191,59 @@ class GeminiService:
             raise GeminiResponseValidationError("AI companion returned an empty response.")
 
         return reply_text
+
+    async def transcribe_audio(
+        self,
+        audio_base64: str,
+        mime_type: str = "audio/webm",
+    ) -> str:
+        """Transcribe speech audio to text using Gemini multimodal capabilities."""
+        import base64
+
+        try:
+            audio_bytes = base64.b64decode(audio_base64)
+        except Exception as exc:
+            logger.warning("Failed to decode audio base64: %s", exc)
+            raise GeminiResponseValidationError("Invalid audio data encoding.")
+
+        audio_part = types.Part.from_bytes(data=audio_bytes, mime_type=mime_type)
+
+        prompt = (
+            "Transcribe this spoken audio clip verbatim. "
+            "Output ONLY the transcribed speech in its original language. "
+            "Do not include quotes, timestamps, commentary, or translations. "
+            "If the audio contains only silence or unintelligible background noise, return an empty response."
+        )
+
+        candidate_models = [
+            "gemini-flash-lite-latest",
+            "gemini-3.1-flash-lite",
+            self.settings.GEMINI_MODEL,
+            "gemini-3.5-flash-lite",
+        ]
+        models_to_try = list(dict.fromkeys(m for m in candidate_models if m))
+
+        response = None
+        for attempt_idx, model_name in enumerate(models_to_try):
+            try:
+                response = await asyncio.wait_for(
+                    self.client.aio.models.generate_content(
+                        model=model_name,
+                        contents=[audio_part, prompt],
+                    ),
+                    timeout=self.settings.REQUEST_TIMEOUT_SECONDS,
+                )
+                break
+            except Exception as exc:
+                logger.warning("Transcription attempt on %s failed: %s", model_name, type(exc).__name__)
+                if attempt_idx < len(models_to_try) - 1:
+                    continue
+                raise GeminiServiceError("Failed to transcribe audio.")
+
+        if not response or not response.text:
+            return ""
+
+        return response.text.strip()
 
 
 def get_gemini_service() -> GeminiService:

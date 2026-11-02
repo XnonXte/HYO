@@ -99,3 +99,25 @@ class ErrorDetail(BaseModel):
         default=None,
         description="Internal error code identifier",
     )
+
+
+class TranscribeRequest(BaseModel):
+    """Payload for audio transcription endpoint."""
+
+    audio_base64: str = Field(
+        ...,
+        description="Base64-encoded audio bytes",
+    )
+    mime_type: str = Field(
+        default="audio/webm",
+        description="MIME type of the audio recording (e.g. audio/webm, audio/wav, audio/mp4)",
+    )
+
+
+class TranscribeResponse(BaseModel):
+    """Response payload for audio transcription endpoint."""
+
+    text: str = Field(
+        ...,
+        description="Transcribed text from user audio",
+    )

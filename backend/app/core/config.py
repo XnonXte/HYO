@@ -58,7 +58,7 @@ class Settings(BaseSettings):
 
     # CORS Configuration
     CORS_ORIGINS: str = Field(
-        default="http://localhost:5173",
+        default="http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000,http://127.0.0.1:3000",
         description="Comma-separated list of allowed CORS origins",
     )
 
@@ -72,7 +72,7 @@ class Settings(BaseSettings):
         description="Maximum conversation history messages sent to the LLM",
     )
     REQUEST_TIMEOUT_SECONDS: float = Field(
-        default=30.0,
+        default=45.0,
         description="Maximum timeout in seconds for LLM generation requests",
     )
 
