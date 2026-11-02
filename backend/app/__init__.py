@@ -1,1 +1,0 @@
-"""HYO Backend Application Package."""
