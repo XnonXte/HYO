@@ -1,6 +1,11 @@
-import type { FC } from 'react';
-import { ChevronLeft, CalendarDays, Headphones, ChevronRight } from 'lucide-react';
-import type { JournalEntry, RoadmapItem } from '../../types';
+import type { FC } from "react";
+import {
+  ChevronLeft,
+  CalendarDays,
+  Headphones,
+  ChevronRight,
+} from "lucide-react";
+import type { JournalEntry, RoadmapItem } from "../../types";
 
 interface DetailJournalScreenProps {
   entry: JournalEntry;
@@ -58,7 +63,7 @@ export const DetailJournalScreen: FC<DetailJournalScreenProps> = ({
         {/* Mascot */}
         <div className="relative size-28 shrink-0 z-10 flex items-center justify-center">
           <img
-            src="/assets/mascot-happy.png"
+            src="/assets/mascot-new/mascot-cute.png"
             alt="Happy Hyo Mascot"
             className="w-full h-full object-contain drop-shadow-[0px_8px_12px_rgba(0,90,182,0.18)]"
           />
@@ -78,7 +83,7 @@ export const DetailJournalScreen: FC<DetailJournalScreenProps> = ({
           {/* Mood Portrait */}
           <div className="size-20 rounded-full border-2 border-white shadow-sm overflow-hidden shrink-0 bg-blue-50 flex items-center justify-center">
             <img
-              src="/assets/mascot-portrait.png"
+              src="/assets/mascot-new/mascot-idle.png"
               alt={entry.moodLabel}
               className="size-full object-cover"
             />
@@ -112,7 +117,8 @@ export const DetailJournalScreen: FC<DetailJournalScreenProps> = ({
               It’s okay to ask for help.
             </p>
             <p className="font-['Inter'] text-[12px] text-[#475569] leading-tight mt-0.5 line-clamp-2">
-              If you’re feeling overwhelmed, consider reaching out to a counselor who can listen.
+              If you’re feeling overwhelmed, consider reaching out to a
+              counselor who can listen.
             </p>
           </div>
 
@@ -145,7 +151,9 @@ export const DetailJournalScreen: FC<DetailJournalScreenProps> = ({
               >
                 {/* Date */}
                 <div className="w-11 shrink-0 flex flex-col font-['Inter'] text-[12.5px] leading-tight">
-                  <span className={`font-semibold ${item.isActive ? 'text-[#005ab6]' : 'text-[#475569]'}`}>
+                  <span
+                    className={`font-semibold ${item.isActive ? "text-[#005ab6]" : "text-[#475569]"}`}
+                  >
                     {item.day}
                   </span>
                   <span className="text-[#475569] text-[11.5px] mt-0.5">

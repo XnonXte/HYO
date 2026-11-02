@@ -1,6 +1,11 @@
-import { useState, type FC } from 'react';
-import { Search, SlidersHorizontal, ChevronRight, MessageSquareText } from 'lucide-react';
-import type { JournalEntry } from '../../types';
+import { useState, type FC } from "react";
+import {
+  Search,
+  SlidersHorizontal,
+  ChevronRight,
+  MessageSquareText,
+} from "lucide-react";
+import type { JournalEntry } from "../../types";
 
 interface JournalScreenProps {
   entries: JournalEntry[];
@@ -11,7 +16,7 @@ export const JournalScreen: FC<JournalScreenProps> = ({
   entries,
   onSelectEntry,
 }) => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filteredEntries = entries.filter((entry) => {
     const q = searchQuery.toLowerCase();
@@ -39,14 +44,15 @@ export const JournalScreen: FC<JournalScreenProps> = ({
             Journaling
           </h1>
           <p className="font-['Inter'] font-medium text-[13.5px] sm:text-[14px] text-[#475569] mt-1.5 leading-relaxed">
-            Your thoughts, progress, and little steps along the way. You're doing great!
+            Your thoughts, progress, and little steps along the way. You're
+            doing great!
           </p>
         </div>
 
         {/* Mascot holding heart */}
         <div className="relative size-24 shrink-0 z-10 flex items-center justify-center">
           <img
-            src="/assets/mascot-heart.png"
+            src="/assets/mascot-new/mascot-hearth.png"
             alt="Mascot holding heart"
             className="w-full h-full object-contain drop-shadow-[0px_8px_12px_rgba(0,90,182,0.18)]"
           />
@@ -75,7 +81,10 @@ export const JournalScreen: FC<JournalScreenProps> = ({
       </section>
 
       {/* Feed Section: Recent Journals */}
-      <section aria-label="Recent Journals Feed" className="flex flex-col gap-3">
+      <section
+        aria-label="Recent Journals Feed"
+        className="flex flex-col gap-3"
+      >
         <div className="px-1">
           <h2 className="font-['Inter'] font-bold text-[20px] text-black tracking-tight">
             Recent Journals

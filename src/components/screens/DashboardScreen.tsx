@@ -1,7 +1,7 @@
-import type { FC } from 'react';
-import { Sparkles, MapPin, ChevronRight } from 'lucide-react';
-import { MoodSelector } from '../common/MoodSelector';
-import type { MoodType, TabType, ActivityRecommendation } from '../../types';
+import type { FC } from "react";
+import { Sparkles, MapPin, ChevronRight } from "lucide-react";
+import { MoodSelector } from "../common/MoodSelector";
+import type { MoodType, TabType, ActivityRecommendation } from "../../types";
 
 interface DashboardScreenProps {
   currentMood: MoodType;
@@ -32,7 +32,7 @@ export const DashboardScreen: FC<DashboardScreenProps> = ({
         {/* Mascot Character */}
         <div className="relative w-44 h-40 flex items-center justify-center my-1">
           <img
-            src="/assets/mascot-talk.png"
+            src="/assets/mascot-new/mascot-idle-2.png"
             alt="Hyo 3D Mascot"
             className="w-full h-full object-contain drop-shadow-[0px_12px_14px_rgba(0,90,182,0.2)] hover:scale-105 transition-transform duration-300"
           />
@@ -48,7 +48,7 @@ export const DashboardScreen: FC<DashboardScreenProps> = ({
           </p>
 
           <button
-            onClick={() => onNavigate('talk')}
+            onClick={() => onNavigate("talk")}
             className="h-11 px-6 rounded-full bg-gradient-to-r from-[#2f80ed] to-[#005ab6] text-white font-semibold text-[14px] sm:text-[15px] flex items-center justify-center gap-2 shadow-[0px_6px_14px_rgba(0,90,182,0.32)] hover:shadow-lg active:scale-95 transition-all"
           >
             <Sparkles className="size-4" />
@@ -58,13 +58,16 @@ export const DashboardScreen: FC<DashboardScreenProps> = ({
       </section>
 
       {/* 2. "Your Today" / Mood Check-in Section */}
-      <section aria-label="Your Today Mood Check-in" className="flex flex-col gap-2.5">
+      <section
+        aria-label="Your Today Mood Check-in"
+        className="flex flex-col gap-2.5"
+      >
         <div className="flex items-center justify-between px-1">
           <h2 className="font-['Inter'] font-bold text-[20px] sm:text-[22px] text-black tracking-tight">
             Your Today
           </h2>
           <button
-            onClick={() => onNavigate('journal')}
+            onClick={() => onNavigate("journal")}
             className="flex items-center gap-1 font-['Inter'] font-semibold text-[14px] text-[#005ab6] hover:underline"
           >
             <span>See History</span>
@@ -101,7 +104,7 @@ export const DashboardScreen: FC<DashboardScreenProps> = ({
             {todayActivity.tag}
           </span>
           <button
-            onClick={() => onNavigate('journal')}
+            onClick={() => onNavigate("journal")}
             className="flex items-center gap-0.5 font-['Inter'] font-semibold text-[13px] text-[#005ab6] hover:underline"
           >
             <span>See More</span>

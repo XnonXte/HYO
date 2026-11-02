@@ -1,7 +1,7 @@
-import type { FC } from 'react';
-import { ChevronRight } from 'lucide-react';
-import { MoodSelector } from '../common/MoodSelector';
-import type { UserProfile, MoodType, RoadmapItem } from '../../types';
+import type { FC } from "react";
+import { ChevronRight } from "lucide-react";
+import { MoodSelector } from "../common/MoodSelector";
+import type { UserProfile, MoodType, RoadmapItem } from "../../types";
 
 interface ProfileScreenProps {
   user: UserProfile;
@@ -21,20 +21,20 @@ export const ProfileScreen: FC<ProfileScreenProps> = ({
   return (
     <div className="w-full flex flex-col gap-5 pb-28 px-4 pt-1">
       {/* Hero Card with Mascot peek */}
-      <div className="relative pt-6">
-        {/* Mascot Peeking at top */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-14 overflow-hidden z-10 flex items-center justify-center">
+      <div className="relative pt-10">
+        {/* Mascot Peeking at top (Behind Card) */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 z-0 flex items-center justify-center pointer-events-none">
           <img
-            src="/assets/mascot-peek.png"
+            src="/assets/mascot-new/mascot-idle-2.png"
             alt="Mascot Peek"
-            className="w-28 h-auto object-contain -translate-y-2 opacity-90"
+            className="w-28 h-auto object-contain"
           />
         </div>
 
         {/* Hero Card */}
         <section
           aria-label="Profile Card"
-          className="relative overflow-hidden rounded-[26px] bg-gradient-to-b from-[#e8f1fc] via-[#f1f6ff] to-white border border-blue-100/60 p-5 shadow-[0px_10px_28px_-6px_rgba(37,99,235,0.08)] flex flex-col gap-5"
+          className="relative z-10 overflow-hidden rounded-[26px] bg-gradient-to-b from-[#e8f1fc] via-[#f1f6ff] to-white border border-blue-100/60 p-5 shadow-[0px_10px_28px_-6px_rgba(37,99,235,0.08)] flex flex-col gap-5"
         >
           {/* Ambient Glows */}
           <div className="absolute -top-6 -right-6 size-48 rounded-full bg-blue-200/40 blur-[28px] pointer-events-none" />
@@ -113,10 +113,7 @@ export const ProfileScreen: FC<ProfileScreenProps> = ({
         <h2 className="font-['Inter'] font-semibold text-[18px] text-[#1e293b] tracking-tight">
           Current Mood
         </h2>
-        <MoodSelector
-          selectedMood={currentMood}
-          onSelectMood={onSelectMood}
-        />
+        <MoodSelector selectedMood={currentMood} onSelectMood={onSelectMood} />
       </section>
 
       {/* Personalized Roadmap Card */}
