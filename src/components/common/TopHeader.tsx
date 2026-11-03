@@ -4,15 +4,25 @@ import { Settings } from 'lucide-react';
 interface TopHeaderProps {
   onOpenSettings?: () => void;
   className?: string;
+  /**
+   * Float the header over the screen with no background so artwork behind it
+   * (e.g. the Talk screen glow) shows through. Default is the sticky frosted bar.
+   */
+  overlay?: boolean;
 }
 
 export const TopHeader: FC<TopHeaderProps> = ({
   onOpenSettings,
   className = '',
+  overlay = false,
 }) => {
+  const surface = overlay
+    ? 'absolute top-0 left-0 right-0'
+    : 'sticky top-0 backdrop-blur-md bg-white/70 transition-colors';
+
   return (
     <header
-      className={`w-full h-16 px-4 flex items-center justify-between backdrop-blur-md bg-white/70 z-20 shrink-0 sticky top-0 transition-colors ${className}`}
+      className={`w-full h-16 px-4 flex items-center justify-between z-20 shrink-0 ${surface} ${className}`}
     >
       <div className="flex items-center">
         <img

@@ -43,9 +43,13 @@ export function App() {
     <div className="h-screen h-[100dvh] w-full bg-slate-900/10 flex items-center justify-center overflow-hidden selection:bg-blue-100 selection:text-blue-700">
       {/* Main Mobile Frame Container */}
       <div className="relative w-full max-w-[430px] h-screen h-[100dvh] bg-white sm:border-x sm:border-slate-200/80 sm:shadow-2xl flex flex-col overflow-hidden">
-        {/* Top Header (Hidden when viewing detail journal to allow dedicated back button header) */}
+        {/* Top Header (Hidden when viewing detail journal to allow dedicated back button header).
+            On the Talk tab it floats transparently over the screen's glow. */}
         {!selectedJournalEntry && (
-          <TopHeader onOpenSettings={() => setIsSettingsModalOpen(true)} />
+          <TopHeader
+            overlay={activeTab === 'talk'}
+            onOpenSettings={() => setIsSettingsModalOpen(true)}
+          />
         )}
 
         {/* 3. Screen Viewport */}
@@ -70,9 +74,7 @@ export function App() {
               )}
 
               {activeTab === 'talk' && (
-                <AiTalkScreen
-                  onOpenQuickMenu={() => setIsSettingsModalOpen(true)}
-                />
+                <AiTalkScreen />
               )}
 
               {activeTab === 'journal' && (
