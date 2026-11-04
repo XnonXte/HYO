@@ -1,5 +1,5 @@
 import { useState, type FC, type FormEvent } from "react";
-import { Eye } from "lucide-react";
+import { ArrowRight, Eye } from "lucide-react";
 import { MascotSprite } from "../common/MascotSprite";
 
 interface LoginScreenProps {
@@ -27,7 +27,7 @@ export const LoginScreen: FC<LoginScreenProps> = ({ onLogin }) => {
   return (
     <div className="relative w-full h-full overflow-y-auto no-scrollbar bg-white flex flex-col">
       {/* Top space with the mascot peeking over the card */}
-      <div className="relative grow-0 shrink basis-[265px] min-h-[141px]">
+      <div className="relative grow-0 shrink basis-[265px] min-h-[125px]">
         <div className="absolute left-1/2 -translate-x-1/2 -bottom-[22px] z-10">
           <MascotSprite pose="peek" alt="HYO mascot peeking" />
         </div>
@@ -137,6 +137,16 @@ export const LoginScreen: FC<LoginScreenProps> = ({ onLogin }) => {
             Sign up
           </button>
         </p>
+
+        {/* Skip login and open the app with the demo profile */}
+        <button
+          type="button"
+          onClick={onLogin}
+          className="relative self-center mt-3 flex items-center gap-1.5 font-['Inter'] font-semibold text-[15px] leading-5 text-[#005ab6] hover:underline underline-offset-4"
+        >
+          Next to demo
+          <ArrowRight className="size-4" />
+        </button>
       </section>
     </div>
   );
