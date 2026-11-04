@@ -223,7 +223,13 @@ export const AiTalkScreen: FC = () => {
         : "Voice isn't available here";
 
   return (
-    <div className="relative w-full h-full min-h-[620px] flex flex-col overflow-hidden pt-16">
+    <div
+      className={`relative w-full flex flex-col pt-16 ${
+        // Empty state grows with its content (scrolls only if the screen is too short);
+        // a conversation fills the screen exactly and scrolls its message list.
+        isHero ? "flex-1 overflow-x-clip" : "h-full overflow-hidden"
+      }`}
+    >
       {/* Backgrounds */}
       {isHero ? (
         <div

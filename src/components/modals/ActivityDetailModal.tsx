@@ -15,7 +15,7 @@ export const ActivityDetailModal: FC<ActivityDetailModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-sm bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-100 flex flex-col max-h-[90vh]">
+      <div className="relative w-full max-w-sm bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-100 flex flex-col max-h-[90dvh]">
         {/* Cover Image */}
         <div className="relative h-48 w-full bg-slate-100 shrink-0">
           <img

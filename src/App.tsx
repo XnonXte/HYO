@@ -22,9 +22,9 @@ import type { TabType, MoodType, RoadmapItem, ActivityRecommendation } from './t
 type AppPhase = 'splash' | 'login' | 'app';
 
 const FRAME_OUTER_CLASS =
-  'h-screen h-[100dvh] w-full bg-slate-900/10 flex items-center justify-center overflow-hidden selection:bg-blue-100 selection:text-blue-700';
+  'h-viewport w-full bg-slate-900/10 flex items-center justify-center overflow-hidden selection:bg-blue-100 selection:text-blue-700';
 const FRAME_INNER_CLASS =
-  'relative w-full max-w-[430px] h-screen h-[100dvh] bg-white sm:border-x sm:border-slate-200/80 sm:shadow-2xl flex flex-col overflow-hidden';
+  'relative w-full max-w-[430px] mx-auto h-viewport bg-white sm:border-x sm:border-slate-200/80 sm:shadow-2xl flex flex-col overflow-hidden';
 
 export function App() {
   // Splash then login run on every app start; login goes straight to the existing profile

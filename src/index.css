@@ -11,6 +11,15 @@
   }
 }
 
+/* Full visible viewport height. 100vh is the fallback; browsers that support
+   dvh use the dynamic height, which excludes mobile address/tool bars. */
+@layer utilities {
+  .h-viewport {
+    height: 100vh;
+    height: 100dvh;
+  }
+}
+
 /* Custom scrollbar hiding for clean app view */
 .no-scrollbar::-webkit-scrollbar {
   display: none;

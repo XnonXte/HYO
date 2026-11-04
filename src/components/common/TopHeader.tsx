@@ -24,11 +24,13 @@ export const TopHeader: FC<TopHeaderProps> = ({
     <header
       className={`w-full h-16 px-4 flex items-center justify-between z-20 shrink-0 ${surface} ${className}`}
     >
-      <div className="flex items-center">
+      {/* Logo: 77×38 crop of logo.png, matching Figma node 19:200 */}
+      <div className="relative self-start mt-3 w-[77px] h-[38px] overflow-hidden cursor-pointer transition-transform hover:scale-105 active:scale-95">
         <img
           src="/assets/logo.png"
           alt="Hyo"
-          className="h-9 w-auto object-contain cursor-pointer transition-transform hover:scale-105 active:scale-95"
+          className="absolute max-w-none"
+          style={{ width: '266.22%', height: '179.77%', left: '-88%', top: '-42.59%' }}
         />
       </div>
 

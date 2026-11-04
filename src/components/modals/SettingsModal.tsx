@@ -17,7 +17,7 @@ export const SettingsModal: FC<SettingsModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl border border-slate-100 flex flex-col gap-5 max-h-[90vh] overflow-y-auto no-scrollbar">
+      <div className="relative w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl border border-slate-100 flex flex-col gap-5 max-h-[90dvh] overflow-y-auto no-scrollbar">
         <div className="flex items-center justify-between pb-2 border-b border-slate-100">
           <h3 className="font-['Inter'] font-bold text-lg text-black">
             Settings & Preferences
