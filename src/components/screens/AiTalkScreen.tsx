@@ -3,6 +3,7 @@ import {
   useEffect,
   useRef,
   useCallback,
+  useMemo,
   type FC,
   type KeyboardEvent,
   type ChangeEvent,
@@ -24,6 +25,7 @@ import { MessageBubbleSkeleton } from "../chat/MessageBubbleSkeleton";
 import { ChatMessageBubble } from "../chat/ChatMessageBubble";
 import { MascotStage, type MascotMood } from "../chat/MascotStage";
 import { QuickMenu } from "../chat/QuickMenu";
+import { detectConversationLanguage } from "../../utils/language";
 
 /** Solid microphone glyph for the hero button (lucide's Mic is outline-only). */
 const SolidMicIcon: FC<{ className?: string }> = ({ className }) => (
@@ -76,6 +78,11 @@ export const AiTalkScreen: FC = () => {
   const stopListeningRef = useRef<() => void>(() => {});
 
   const isHero = messages.length === 0;
+  // Read-aloud uses the conversation's language when a message alone is unclear
+  const conversationLanguage = useMemo(
+    () => detectConversationLanguage(messages.map((m) => m.content)),
+    [messages],
+  );
   const showComposer = !isHero || isComposerOpen;
 
   // Voice-to-text: interim results only drive the live caption; the final result is
@@ -285,6 +292,7 @@ export const AiTalkScreen: FC = () => {
                   message={message}
                   onRetry={() => retryMessage(message.id)}
                   onSpeakingStateChange={setIsTTSActive}
+                  conversationLanguage={conversationLanguage}
                 />
               ))}
 

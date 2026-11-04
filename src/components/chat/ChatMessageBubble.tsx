@@ -1,17 +1,22 @@
 import { useState, type FC } from 'react';
 import { Volume2, VolumeX, AlertCircle, RotateCcw } from 'lucide-react';
 import type { UiMessage } from '../../types/chat';
+import { detectLanguage, type ChatLanguage } from '../../utils/language';
+import { pickVoice, SPEECH_LOCALES } from '../../utils/speech';
 
 interface ChatMessageBubbleProps {
   message: UiMessage;
   onRetry?: () => void;
   onSpeakingStateChange?: (speaking: boolean) => void;
+  /** Language of the whole conversation, used when this message alone is unclear */
+  conversationLanguage?: ChatLanguage | null;
 }
 
 export const ChatMessageBubble: FC<ChatMessageBubbleProps> = ({
   message,
   onRetry,
   onSpeakingStateChange,
+  conversationLanguage = null,
 }) => {
   const isUser = message.role === 'user';
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -30,6 +35,11 @@ export const ChatMessageBubble: FC<ChatMessageBubbleProps> = ({
 
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(message.content);
+    // Speak in the conversation's language (Indonesian or English)
+    const language = detectLanguage(message.content) ?? conversationLanguage ?? 'en';
+    utterance.lang = SPEECH_LOCALES[language];
+    const voice = pickVoice(language);
+    if (voice) utterance.voice = voice;
     utterance.rate = 1.0;
     utterance.pitch = 1.0;
 

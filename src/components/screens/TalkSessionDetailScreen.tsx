@@ -6,6 +6,7 @@ import type { MoodType, RoadmapItem } from "../../types";
 import type { UiMessage } from "../../types/chat";
 import { ChatMessageBubble } from "../chat/ChatMessageBubble";
 import { DetailJournalScreen } from "./DetailJournalScreen";
+import { detectConversationLanguage } from "../../utils/language";
 
 interface TalkSessionDetailScreenProps {
   session: TalkSession;
@@ -50,6 +51,11 @@ export const TalkSessionDetailScreen: FC<TalkSessionDetailScreenProps> = ({
     [session.messages],
   );
 
+  const conversationLanguage = useMemo(
+    () => detectConversationLanguage(session.messages.map((m) => m.content)),
+    [session.messages],
+  );
+
   return (
     <DetailJournalScreen
       entry={entry}
@@ -73,7 +79,11 @@ export const TalkSessionDetailScreen: FC<TalkSessionDetailScreenProps> = ({
 
         <div className="flex flex-col gap-4">
           {messages.map((message) => (
-            <ChatMessageBubble key={message.id} message={message} />
+            <ChatMessageBubble
+              key={message.id}
+              message={message}
+              conversationLanguage={conversationLanguage}
+            />
           ))}
         </div>
       </section>
