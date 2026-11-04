@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 import {
   ChevronLeft,
   CalendarDays,
@@ -12,6 +12,8 @@ interface DetailJournalScreenProps {
   onBack: () => void;
   onTalkToCounselor?: () => void;
   onSelectRoadmapItem?: (item: RoadmapItem) => void;
+  /** Extra content shown after the roadmap (e.g. a Talk transcript) */
+  children?: ReactNode;
 }
 
 export const DetailJournalScreen: FC<DetailJournalScreenProps> = ({
@@ -19,6 +21,7 @@ export const DetailJournalScreen: FC<DetailJournalScreenProps> = ({
   onBack,
   onTalkToCounselor,
   onSelectRoadmapItem,
+  children,
 }) => {
   const roadmapItems = entry.roadmap || [];
 
@@ -192,6 +195,8 @@ export const DetailJournalScreen: FC<DetailJournalScreenProps> = ({
           </div>
         </section>
       )}
+
+      {children}
     </div>
   );
 };

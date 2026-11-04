@@ -115,18 +115,24 @@ export const AiTalkScreen: FC = () => {
 
   const caption = isListening ? liveCaption : "";
 
-  // Track recent assistant messages to trigger talking state for 4 seconds
+  // Track recent assistant messages to trigger talking state for 4 seconds.
+  // Only fresh replies count, so a restored conversation doesn't replay the animation.
   useEffect(() => {
     if (messages.length > 0) {
       const lastMessage = messages[messages.length - 1];
-      if (lastMessage.role === "assistant" && !lastMessage.isError) {
+      const remainingMs = 4000 - (Date.now() - lastMessage.timestamp.getTime());
+      if (
+        lastMessage.role === "assistant" &&
+        !lastMessage.isError &&
+        remainingMs > 0
+      ) {
         const id = lastMessage.id;
         const startTimer = setTimeout(() => {
           setRecentlyReceivedAssistantId(id);
         }, 0);
         const endTimer = setTimeout(() => {
           setRecentlyReceivedAssistantId((curr) => (curr === id ? null : curr));
-        }, 4000);
+        }, remainingMs);
         return () => {
           clearTimeout(startTimer);
           clearTimeout(endTimer);
