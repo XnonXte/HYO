@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import { Sparkles, MapPin, ChevronRight } from "lucide-react";
 import { MoodSelector } from "../common/MoodSelector";
+import { MascotSprite } from "../common/MascotSprite";
 import type { MoodType, TabType, ActivityRecommendation } from "../../types";
 
 interface DashboardScreenProps {
@@ -29,13 +30,11 @@ export const DashboardScreen: FC<DashboardScreenProps> = ({
         <div className="absolute -top-6 -right-6 size-40 rounded-full bg-blue-200/40 blur-[24px] pointer-events-none" />
         <div className="absolute -bottom-6 -left-6 size-36 rounded-full bg-sky-200/50 blur-[18px] pointer-events-none" />
 
-        {/* Mascot Character */}
-        <div className="relative w-44 h-40 flex items-center justify-center my-1">
-          <img
-            src="/assets/mascot-new/mascot-idle-2.png"
-            alt="Hyo 3D Mascot"
-            className="w-full h-full object-contain drop-shadow-[0px_12px_14px_rgba(0,90,182,0.2)] hover:scale-105 transition-transform duration-300"
-          />
+        {/* Mascot peeking over the text box, paws resting on its top edge (Figma 164:170) */}
+        <div className="relative w-full h-[132px]">
+          <div className="absolute left-1/2 -translate-x-1/2 -bottom-[30px] drop-shadow-[0px_12px_8px_rgba(0,90,182,0.18)]">
+            <MascotSprite pose="peekLarge" alt="Hyo 3D Mascot" />
+          </div>
         </div>
 
         {/* Text and Action Pill Box */}

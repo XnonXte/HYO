@@ -1,7 +1,7 @@
 import type { CSSProperties, FC } from "react";
 
 /** Poses cropped from the Figma mascot sprite sheet (/assets/splash/mascot-sprite.png). */
-export type MascotPose = "peek" | "front" | "wave";
+export type MascotPose = "peek" | "peekLarge" | "front" | "wave";
 
 interface Crop {
   width: number;
@@ -15,6 +15,12 @@ const CROPS: Record<MascotPose, Crop> = {
     width: 206,
     height: 163,
     image: { width: "501.96%", height: "421.4%", left: "-401.96%", top: "-179.01%" },
+  },
+  /** Same peeking pose, larger crop used on the Home hero card (Figma node I6:317;3:97) */
+  peekLarge: {
+    width: 245,
+    height: 197,
+    image: { width: "510.3%", height: "423.14%", left: "-410.3%", top: "-183.88%" },
   },
   front: {
     width: 203,

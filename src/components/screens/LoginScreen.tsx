@@ -27,16 +27,17 @@ export const LoginScreen: FC<LoginScreenProps> = ({ onLogin }) => {
   return (
     <div className="relative w-full h-full overflow-y-auto no-scrollbar bg-white flex flex-col">
       {/* Top space with the mascot peeking over the card */}
-      <div className="relative shrink-0 h-[clamp(150px,27.7dvh,265px)]">
+      <div className="relative grow-0 shrink basis-[265px] min-h-[141px]">
         <div className="absolute left-1/2 -translate-x-1/2 -bottom-[22px] z-10">
           <MascotSprite pose="peek" alt="HYO mascot peeking" />
         </div>
       </div>
 
-      {/* Card */}
+      {/* Card. Vertical gaps match Figma on a 956px-tall screen and shrink on shorter
+          screens (clamp(min, F/756*100dvh - F*200/756, F)) so the page fits without scrolling. */}
       <section
         aria-label="Login"
-        className="relative grow shrink-0 w-full overflow-hidden rounded-t-[35px] border border-b-0 border-[rgba(219,234,254,0.6)] bg-gradient-to-b from-[#e8f1fc] via-[#f1f6ff] to-white shadow-[0px_10px_28px_-6px_rgba(37,99,235,0.08)] px-[15px] pt-[33px] pb-9 flex flex-col"
+        className="relative grow shrink-0 w-full overflow-hidden rounded-t-[35px] border border-b-0 border-[rgba(219,234,254,0.6)] bg-gradient-to-b from-[#e8f1fc] via-[#f1f6ff] to-white shadow-[0px_10px_28px_-6px_rgba(37,99,235,0.08)] px-[15px] pt-[clamp(16px,calc(4.365dvh-8.73px),33px)] pb-[clamp(16px,calc(4.762dvh-9.52px),36px)] flex flex-col"
       >
         {/* Ambient glow */}
         <div aria-hidden="true" className="absolute left-[220px] -top-[41px] size-[160px] rounded-full bg-[rgba(191,219,254,0.4)] blur-[20px] pointer-events-none" />
@@ -50,7 +51,7 @@ export const LoginScreen: FC<LoginScreenProps> = ({ onLogin }) => {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="relative mt-[37px] flex flex-col">
+        <form onSubmit={handleSubmit} className="relative mt-[clamp(18px,calc(4.894dvh-9.79px),37px)] flex flex-col">
           {/* Username / Email */}
           <label className="h-[54px] w-full rounded-[25.5px] border border-[#005ab6] pl-[21px] pr-4 flex items-center gap-[7px] focus-within:ring-2 focus-within:ring-[#005ab6]/20">
             <img src="/assets/login/email.svg" alt="" width={26} height={26} className="shrink-0" />
@@ -66,7 +67,7 @@ export const LoginScreen: FC<LoginScreenProps> = ({ onLogin }) => {
           </label>
 
           {/* Password */}
-          <label className="mt-[37px] h-[54px] w-full rounded-[25.5px] border border-[#005ab6] pl-[19px] pr-3 flex items-center gap-[7px] focus-within:ring-2 focus-within:ring-[#005ab6]/20">
+          <label className="mt-[clamp(18px,calc(4.894dvh-9.79px),37px)] h-[54px] w-full rounded-[25.5px] border border-[#005ab6] pl-[19px] pr-3 flex items-center gap-[7px] focus-within:ring-2 focus-within:ring-[#005ab6]/20">
             <img src="/assets/login/password.svg" alt="" width={26} height={26} className="shrink-0" />
             <input
               type={showPassword ? "text" : "password"}
@@ -100,21 +101,21 @@ export const LoginScreen: FC<LoginScreenProps> = ({ onLogin }) => {
 
           <button
             type="submit"
-            className="mt-[27px] h-[54px] w-full rounded-[27px] bg-[#005ab6] font-['Inter'] font-bold text-[16px] text-white hover:bg-[#004a96] active:scale-[0.99] transition-all"
+            className="mt-[clamp(14px,calc(3.571dvh-7.14px),27px)] h-[54px] w-full rounded-[27px] bg-[#005ab6] font-['Inter'] font-bold text-[16px] text-white hover:bg-[#004a96] active:scale-[0.99] transition-all"
           >
             Login
           </button>
         </form>
 
         {/* Divider */}
-        <div className="relative mt-[27px] flex items-center gap-6" aria-hidden="true">
+        <div className="relative mt-[clamp(14px,calc(3.571dvh-7.14px),27px)] flex items-center gap-6" aria-hidden="true">
           <img src="/assets/login/divider-line.svg" alt="" className="flex-1 min-w-0 h-px" />
           <span className="font-['Inter'] font-bold text-[20px] leading-[normal] text-[#b7b7b7]">or</span>
           <img src="/assets/login/divider-line.svg" alt="" className="flex-1 min-w-0 h-px" />
         </div>
 
         {/* Social logins */}
-        <div className="relative mt-[25px] flex items-center justify-center gap-[25px]">
+        <div className="relative mt-[clamp(12px,calc(3.307dvh-6.61px),25px)] flex items-center justify-center gap-[25px]">
           {SOCIAL_LOGINS.map((social) => (
             <button
               key={social.id}
@@ -130,7 +131,7 @@ export const LoginScreen: FC<LoginScreenProps> = ({ onLogin }) => {
         </div>
 
         {/* Sign up */}
-        <p className="relative mt-auto pt-10 flex items-center justify-center gap-2 font-['Inter'] font-semibold text-[16px]">
+        <p className="relative mt-auto pt-[clamp(16px,calc(5.291dvh-10.58px),40px)] flex items-center justify-center gap-2 font-['Inter'] font-semibold text-[16px]">
           <span className="text-black">Don’t have account?</span>
           <button type="button" onClick={onLogin} className="text-[#005ab6] hover:underline">
             Sign up
